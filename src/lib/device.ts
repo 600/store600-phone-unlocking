@@ -1,8 +1,8 @@
 import { generateBalenaSdk } from './balena/balenaSdkInstance'
 import { decodeDigitToId } from "./cipher"
-import parseJwk from 'jose/jwk/parse'
-import SignJWT from 'jose/jwt/sign'
 import axios from 'axios'
+import jwt from "jsonwebtoken"
+import Eckles from "eckles"
 
 export const generateBackendEndpoint = (pathname: string) => {
   const backendApi = process.env.BACKEND_API
@@ -17,14 +17,19 @@ export const generateBackendEndpoint = (pathname: string) => {
 
 
 const generateAuthToken = async (userId: string) => {
-  const sign = await parseJwk(JSON.parse(process.env.JWT_SIGNING_PRIVATE_KEY))
-  const jwt = await new SignJWT({ uid: userId })
-    .setProtectedHeader({ alg: "ES256" })
-    .setIssuedAt()
-    .setIssuer("store600-phone-unlocking")
-    .setExpirationTime("5m")
-    .sign(sign)
-  return jwt
+  const privatePem = Eckles.exportSync({
+    jwk: JSON.parse(process.env.JWT_SIGNING_PRIVATE_KEY)
+  })
+  console.log("UID", userId)
+  // const privateJwk = await parseJwk(JSON.parse(process.env.JWT_SIGNING_PRIVATE_KEY))
+  const token = jwt.sign({
+    uid: userId
+  }, privatePem, {
+    algorithm: "ES256",
+    expiresIn: "5m",
+    issuer: "store600-phone-unlocking"
+  })
+  return token
 }
 export const unlockDevice = async (digit: number) => {
   const id = decodeDigitToId(digit)
