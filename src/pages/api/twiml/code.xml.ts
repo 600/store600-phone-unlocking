@@ -18,6 +18,8 @@ export default async (req, res) => {
   twiml.say({ voice: "man", language: "ja-JP" }, "受付けました。一分程度で解錠します")
   twiml.hangup()
 
-  await unlockDevice(digits)
   responseTwiml(res, twiml)
+  unlockDevice(digits).then(() => {
+    console.log("xxx")
+  })
 }
