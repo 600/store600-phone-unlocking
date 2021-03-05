@@ -3,6 +3,13 @@ import { generateBalenaSdk } from "../../../lib/balena/balenaSdkInstance"
 import { encodeIdToDigit } from "../../../lib/cipher"
 import { unlockDevice } from "../../../lib/device"
 
+
+const chunk = (input, size) => input.reduce((arr, item, idx) =>
+  idx % size === 0
+    ? [...arr, [item]]
+    : [...arr.slice(0, -1), [...arr.slice(-1)[0], item]]
+  , [])
+
 const handler: NextApiHandler = async (req, res) => {
   if (process.env.NODE_ENV === 'production') {
     return res.status(404).end()
@@ -15,6 +22,6 @@ const handler: NextApiHandler = async (req, res) => {
     return res.status(400).end()
   }
   const digit = encodeIdToDigit(deviceId)
-  res.json(digit)
+  res.json(chunk(digit.split(""), 3).map(s => s.join("")).join("-"))
 }
 export default handler

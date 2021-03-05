@@ -33,9 +33,11 @@ const generateAuthToken = async (userId: string) => {
 }
 export const unlockDevice = async (digit: number) => {
   const id = decodeDigitToId(digit)
+  console.log(digit, id)
   const balenaSdk = await generateBalenaSdk()
   const device = await balenaSdk.models.device.get(id)
   const deviceUuid = device.uuid
+  console.log(deviceUuid)
   const token = await generateAuthToken("anonymous")
 
   const option = {
