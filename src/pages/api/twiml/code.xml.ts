@@ -15,11 +15,10 @@ export default async (req, res) => {
     return
   }
 
-  twiml.say({ voice: "man", language: "ja-JP" }, "受付けました。一分程度で解錠します")
+  twiml.say(DEFAULT_SAY_ATTRIBUTE, "受付けました。")
+  await unlockDevice(digits)
+  twiml.say(DEFAULT_SAY_ATTRIBUTE, "終了します")
   twiml.hangup()
 
   responseTwiml(res, twiml)
-  unlockDevice(digits).then(() => {
-    console.log("finish")
-  })
 }
