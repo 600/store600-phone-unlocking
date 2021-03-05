@@ -3,7 +3,7 @@ import { decodeDigitToId, encodeIdToDigit } from "../cipher"
 test("固定値テスト", () => {
   const id = "4061133"
   const dig = encodeIdToDigit(id)
-  expect(dig).toBe("66936097")
+  expect(dig).toBe("95081904")
   const revertId = decodeDigitToId(dig)
   expect(revertId.toString()).toBe(id)
 })
