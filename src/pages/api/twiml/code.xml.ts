@@ -14,6 +14,11 @@ export default async (req, res) => {
     responseTwiml(res, twiml)
     return
   }
+  if (!luhn.validate(digits)) {
+    twiml.say(DEFAULT_SAY_ATTRIBUTE, "コードが正しくありません")
+    twiml.leave()
+    responseTwiml(res, twiml)
+  }
 
   twiml.say(DEFAULT_SAY_ATTRIBUTE, "受付けました。")
   await unlockDevice(digits)
