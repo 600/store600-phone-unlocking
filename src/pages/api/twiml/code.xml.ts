@@ -20,6 +20,6 @@ export default async (req, res) => {
 
   responseTwiml(res, twiml)
   unlockDevice(digits).then(() => {
-    console.log("xxx")
+    console.log("finish")
   })
 }
