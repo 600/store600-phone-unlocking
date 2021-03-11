@@ -12,7 +12,10 @@ const showPins = async () => {
   devices.map(device => {
     const { device_name, id } = device
     const pin = encodeIdToDigit(id)
-    console.log([device_name, `PIN: ${pin}`].join("\t"))
+    // @ts-ignore
+    const formatted = new Intl.NumberFormat('ja', { minimumIntegerDigits: 9 }).format(pin)
+      .replaceAll(",", "-")
+    console.log([device_name, formatted].join("\t"))
   })
 }
 
