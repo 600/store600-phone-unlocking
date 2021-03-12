@@ -10,14 +10,14 @@ export default async (req, res) => {
 
   if (digits.length !== GATHER_DIGIT_LENGTH) {
     twiml.say(DEFAULT_SAY_ATTRIBUTE, "受付けに失敗しました。")
-    twiml.leave()
+    twiml.hangup()
     responseTwiml(res, twiml)
     return
   }
   // 可能な限りエラーをはやく落としたいので、チェックディジットする
   if (!luhn.validate(digits)) {
     twiml.say(DEFAULT_SAY_ATTRIBUTE, "コードが正しくありません")
-    twiml.leave()
+    twiml.hangup()
     responseTwiml(res, twiml)
   }
 
