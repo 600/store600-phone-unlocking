@@ -14,6 +14,7 @@ export default async (req, res) => {
     responseTwiml(res, twiml)
     return
   }
+  // 可能な限りエラーをはやく落としたいので、チェックディジットする
   if (!luhn.validate(digits)) {
     twiml.say(DEFAULT_SAY_ATTRIBUTE, "コードが正しくありません")
     twiml.leave()
@@ -21,6 +22,7 @@ export default async (req, res) => {
   }
 
   twiml.say(DEFAULT_SAY_ATTRIBUTE, "受付けました。")
+  // TODO: 本当は受け付けて切る -> 非同期処理 とかにしたい
   await unlockDevice(digits)
   twiml.say(DEFAULT_SAY_ATTRIBUTE, "終了します")
   twiml.hangup()
