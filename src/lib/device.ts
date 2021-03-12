@@ -31,12 +31,12 @@ const generateAuthToken = async (userId: string) => {
   })
   return token
 }
-export const unlockDevice = async (digit: number) => {
+export const unlockDevice = async (digit: number, callId: string) => {
   const id = decodeDigitToId(digit)
   const balenaSdk = await generateBalenaSdk()
   const device = await balenaSdk.models.device.get(id)
   const deviceUuid = device.uuid
-  const token = await generateAuthToken("anonymous")
+  const token = await generateAuthToken(`phone-unlock:${callId}`)
 
   const option = {
     headers: {
