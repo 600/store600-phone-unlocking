@@ -22,6 +22,6 @@ export default async (req, res) => {
     return
   }
   twiml.say(DEFAULT_SAY_ATTRIBUTE, "受付けました。")
-  twiml.redirect(`${twiMLEndpoint("execute")}?digits=${digits}`)
+  twiml.redirect(twiMLEndpoint(`/${digits}/execute`))
   responseTwiml(res, twiml)
 }
